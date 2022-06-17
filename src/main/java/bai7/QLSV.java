@@ -73,6 +73,7 @@ public class QLSV {
 
     }
 
+    //khoi tao connection
     public Connection accessDB() {
         Connection con = null;
         try {
@@ -82,9 +83,7 @@ public class QLSV {
             String url = "jdbc:sqlserver://localhost:1433;DatabaseName=JavaQLSV";
             con = DriverManager.getConnection(url, "sa", "123456");
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return con;
@@ -111,7 +110,7 @@ public class QLSV {
         }
     }
 
-    //them class
+    //them lop hoc
     public void addClassPT(String name, int grade, Connection con) {
         try {
             //create statement
@@ -159,7 +158,7 @@ public class QLSV {
             }
             if(list.size() > 0) {
                 for(Student x : list) {
-                    System.out.println(x);
+                    System.out.println("id: " + x.getId() + ": " + x.getName());
                 }
             } else {
                 System.out.println("Khong co hoc sinh nao tuoi " + age);
@@ -183,7 +182,7 @@ public class QLSV {
 
         try {
             ArrayList<Student> list = new ArrayList<>();
-            String sql = "select Student.id, Student.name, Student.age from Student join ClassPT on Student.id_lop = ClassPT.id where ClassPT.name = \'" + className + "\'";
+            String sql = "select Student.id, Student.name, Student.age, ClassPT.id as class_id from Student join ClassPT on Student.id_lop = ClassPT.id where ClassPT.name = \'" + className + "\'";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next()) {
@@ -191,6 +190,7 @@ public class QLSV {
                 student.setId(rs.getInt("id"));
                 student.setName(rs.getString("name"));
                 student.setAge(rs.getInt("age"));
+                student.setId_lop(rs.getInt("class_id"));
                 list.add(student);
             }
             if(list.size() > 0) {
@@ -228,7 +228,7 @@ public class QLSV {
 
         try {
             ArrayList<Student> list = new ArrayList<>();
-            String sql = "select Student.id, Student.name, Student.age from Student join ClassPT on Student.id_lop = ClassPT.id where ClassPT.grade = " + String.valueOf(grade);
+            String sql = "select Student.id, Student.name, Student.age, ClassPT.id as class_id from Student join ClassPT on Student.id_lop = ClassPT.id where ClassPT.grade = " + String.valueOf(grade);
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while(rs.next()) {
@@ -236,6 +236,7 @@ public class QLSV {
                 student.setId(rs.getInt("id"));
                 student.setName(rs.getString("name"));
                 student.setAge(rs.getInt("age"));
+                student.setId_lop(rs.getInt("class_id"));
                 list.add(student);
             }
             if(list.size() > 0) {
@@ -256,6 +257,7 @@ public class QLSV {
         }
     }
 
+    //Menu
     public void menu() {
         System.out.println("*****Menu*****");
         System.out.println("1. Add student");

@@ -82,15 +82,14 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
+        return "Student: " +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", age=" + age +
-                ", id_lop=" + id_lop +
-                '}';
+                ", id_lop=" + id_lop;
     }
 
-
+    //validating class name for a student
     public int validClass(String className) {
         Connection con = null;
         try {
@@ -110,9 +109,7 @@ public class Student {
                 return id;
             }
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         } finally {
             try {
